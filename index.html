@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParlonsPC - Admin Interface</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<script defer src="./index.js"></script>
+
+<body>
+    <div class="starting-modal" id="starting-modal">
+        <h1>Veuillez entrer le mot de passe</h1>
+        <form method="post">
+            <input type="password" name="pwd" id="pwd" class="pwd">
+            <p id="submit-button" class="submit-button">Submit</p>
+        </form>
+        <div id="wrong-pass-container"></div>
+    </div>
+    <div class="infos-container">
+        <p id="nb-total">Nombre total de fiches: </p>
+        <div class="nombre-par-categorie" id="nombre-par-categorie">
+            <!-- javascript -->
+        </div>
+        <p id="derniere-fiche">Dernière fiche </p>
+        <p id="dernier-client">Dernier client </p>
+    </div>
+    <div class="content">
+        <h1>Fiches client</h1>
+        <div class="button-container" id="button-container">
+
+        </div>
+        <div class="fiche-container" id="fiche-container">
+
+        </div>
+    </div>
+</body>
+
+</html>
