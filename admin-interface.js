@@ -101,7 +101,7 @@ const addListener = (button, fiches) => {
         backButtonElement.textContent = "Retour";
 
         backButtonElement.addEventListener("click", event => {
-            location.href = "/";
+            location.href = "/admin-interface.html";
         })
         document.querySelector("body").append(backButtonElement)
     })
@@ -168,7 +168,7 @@ const onClickContactButton = (contact) => {
         backButtonElement.textContent = "Retour";
 
         backButtonElement.addEventListener("click", event => {
-            location.href = "/";
+            location.href = "/admin-interface.html";
         })
         document.querySelector("body").append(backButtonElement);
     })
