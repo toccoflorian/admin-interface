@@ -1,7 +1,7 @@
 
 
 const getData = async (pwd, mode) => {
-    const promise = await fetch(`http://127.0.0.1:6601/${mode}/`, {
+    const promise = await fetch(`http://164.132.229.216:6601/${mode}/`, {
         method: "POST",
         // mode: "no-cors"
         headers: {
