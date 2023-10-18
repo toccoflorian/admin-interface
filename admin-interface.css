@@ -19,24 +19,54 @@ body {
 .fiche-container {
     background-color: white;
     padding: 5px 5px;
-    display: flex;
+    /* display: flex; */
     /* flex-direction: row-reverse;
     justify-content: left; */
     flex-wrap: wrap;
 }
 
 .fiche {
+    display: flex;
+    align-items: center;
     background-color: lightgray;
     width: fit-content;
-    margin: 10px 10px;
-    padding: 10px 10px;
-    border-radius: 10px;
+    margin: 0px 10px;
+    padding: 5px 10px;
+    width: 95%;
 }
 
+.fiche:nth-child(2n) {
+    background-color: rgb(231, 226, 226);
+}
+
+.fiche * {
+    padding: 0;
+    margin: 0;
+    margin-right: 20px;
+}
+
+.fiche h2,
+.fiche p {
+    flex: 1;
+
+}
+
+.fiche h2 {
+    font-size: 17px;
+}
+
+.fiche button {
+    padding: 1px 5px;
+    height: 80%;
+    margin-left: auto;
+}
+
+
+/* Avant mot de passe */
 .submit-button {
     background-color: black;
     color: white;
-    width: max-content;
+    width: min-content;
     padding: 15px 30px;
     border-radius: 15px;
 }

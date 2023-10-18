@@ -1,7 +1,7 @@
 
 
 const getData = async (pwd, mode) => {
-    const promise = await fetch(`http://164.132.229.216:6601/${mode}/`, {
+    const promise = await fetch(`https://floriantocco.site/api/${mode}/`, {
         method: "POST",
         // mode: "no-cors"
         headers: {
@@ -24,7 +24,7 @@ const parseFiches = (fiches) => {
     let lastClient;
     let lastTimeStr;
     let lastTime = 0;
-
+    console.log(fiches);
     let nbTotal = 0;
     let nbByCat = {};
 
@@ -49,17 +49,17 @@ const parseFiches = (fiches) => {
         let rajout = 1;
         if (fiche.client in contact) {
             let key = fiche.client;
-            if (contact[fiche.client][0] !== fiche.fiche.tel || contact[fiche.client][1] !== fiche.fiche.email) {
+            if (contact[fiche.client]["tel"] !== fiche.fiche.tel || contact[fiche.client]["mail"] !== fiche.fiche.email) {
                 while (key in contact) {
                     rajout++;
                     key = fiche.client + rajout;
 
                 }
 
-                contact[key] = [fiche.fiche.tel, fiche.fiche.email];
+                contact[key] = { key, tel: fiche.fiche.tel, mail: fiche.fiche.email };
             }
         } else {
-            contact[fiche.client] = [fiche.fiche.tel, fiche.fiche.email];
+            contact[fiche.client] = { key, tel: fiche.fiche.tel, mail: fiche.fiche.email };
         }
     }
     return {
@@ -90,7 +90,7 @@ const addListener = (button, fiches) => {
     button.addEventListener("click", event => {
         const fiche = fiches[button.id].fiche;
         document.getElementById("fiche-container").innerHTML = null;
-        document.getElementById("fiche-container").innerHTML = `<h2>${fiches[button.id]["client"]} le ${fiches[button.id]["date"]} à ${fiches[button.id]["heure"]}</h2> <br><br>`
+        document.getElementById("fiche-container").innerHTML = `<h2>${fiches[button.id]["client"].replace("-", " ")} le ${fiches[button.id]["date"]} à ${fiches[button.id]["heure"]}</h2> <br><br>`
         for (const key in fiche) {
             document.getElementById("fiche-container").innerHTML += "<p>" + key + ": <br><span style='color:blue'>" + fiche[key] + "</span></p>";
         }
@@ -101,7 +101,7 @@ const addListener = (button, fiches) => {
         backButtonElement.textContent = "Retour";
 
         backButtonElement.addEventListener("click", event => {
-            location.href = "/admin-interface.html";
+            location.href = "/";
         })
         document.querySelector("body").append(backButtonElement)
     })
@@ -120,7 +120,7 @@ const fetchFiche = (fiches) => {
         divElement.classList.add("fiche")
 
         const h2Element = document.createElement("h2");
-        h2Element.textContent = fiches[key]["client"].replace("-", " ");
+        h2Element.textContent = fiches[key]["fiche"]["given-name"] + " " + fiches[key]["fiche"]["family-name"].toUpperCase();
 
         const pTypeElement = document.createElement("p");
         pTypeElement.textContent = fiches[key].type + " -- " + fiches[key].fiche["en-rapport-avec"];
@@ -150,13 +150,17 @@ const onClickContactButton = (contact) => {
             divElement.classList.add("fiche")
 
             const h2Element = document.createElement("h2");
-            h2Element.textContent = key.replace("-", " ");
+            let keyWithoutTiret = key.replace("-", " ");
+            while (keyWithoutTiret.includes("-")) {
+                keyWithoutTiret = keyWithoutTiret.replace("-", " ");
+            }
+            h2Element.textContent = keyWithoutTiret;
 
             const pTypeElement = document.createElement("p");
-            pTypeElement.textContent = contact[key][0];
+            pTypeElement.textContent = contact[key]["tel"];
 
             const pElement = document.createElement("p");
-            pElement.textContent = contact[key][1];
+            pElement.textContent = contact[key]["mail"];
 
 
 
@@ -168,7 +172,7 @@ const onClickContactButton = (contact) => {
         backButtonElement.textContent = "Retour";
 
         backButtonElement.addEventListener("click", event => {
-            location.href = "/admin-interface.html";
+            location.href = "/";
         })
         document.querySelector("body").append(backButtonElement);
     })
@@ -261,3 +265,4 @@ try {
         onPromiseFulfilled(pwd);
     }
 } catch { }
+
