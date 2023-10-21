@@ -25,6 +25,38 @@ body {
     flex-wrap: wrap;
 }
 
+.search-bar form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-bar form textarea {
+
+    width: 400px;
+}
+
+.search-bar form * {
+    margin-right: 25px;
+}
+
+.sort-button-container {
+    display: flex;
+    align-items: center;
+    background-color: lightgray;
+    width: fit-content;
+    margin: 0px 10px;
+    padding: 5px 10px;
+    width: 95%;
+}
+
+.sort-button-container * {
+    flex: 1;
+    padding: 0;
+    margin: 0;
+    margin-right: 20px;
+}
+
 .fiche {
     display: flex;
     align-items: center;

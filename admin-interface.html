@@ -33,6 +33,29 @@
 
         </div>
         <div class="fiche-container" id="fiche-container">
+            <div class="search-bar">
+                <form>
+                    <label for="input-searched-word">Rechercher</label>
+                    <textarea type="text" name="searched-word" id="input-searched-word"></textarea>
+                    <label for="select-searched-in">dans</label>
+                    <select name="searched-in" id="select-searched-in">
+                        <option value="client">Nom ou prenom</option>
+                        <option value="societe">Société</option>
+                        <option value="email">email</option>
+                        <option value="tel">tel</option>
+                        <option value="message">message</option>
+                        <option value="all">partout</option>
+                    </select>
+                    <button class="search-button" id="search-button" type="button">rechercher</button>
+                </form>
+            </div>
+            trier:
+            <div class="sort-button-container">
+                <button id="name-sort-button">par Nom</button>
+                <button id="type-sort-button">par Type</button>
+                <button id="sujet-sort-button">par Sujet</button>
+                <button id="date-sort-button">par Date</button>
+            </div>
 
         </div>
     </div>

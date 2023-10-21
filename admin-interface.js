@@ -24,7 +24,7 @@ const parseFiches = (fiches) => {
     let lastClient;
     let lastTimeStr;
     let lastTime = 0;
-    console.log(fiches);
+    // console.log(fiches);
     let nbTotal = 0;
     let nbByCat = {};
 
@@ -101,10 +101,49 @@ const addListener = (button, fiches) => {
         backButtonElement.textContent = "Retour";
 
         backButtonElement.addEventListener("click", event => {
-            location.href = "/";
+            location.reload();
         })
-        document.querySelector("body").append(backButtonElement)
+        document.getElementById("button-container").append(backButtonElement)
     })
+}
+
+const sortFiches = (fiches) => {
+    const sortingValue = localStorage.getItem("sorting")
+
+    const arrayFiches = [];
+
+    for (const fiche in fiches) {
+        const ficheObject = fiches[fiche];
+        ficheObject["id"] = fiche;
+        arrayFiches.push(ficheObject)
+        // arrayFiches[fiches[fiche]]["id"] = fiche;
+        // console.log(fiches[fiche]);
+    }
+
+    console.log(arrayFiches);
+
+
+    switch (sortingValue) {
+        case "name":
+            document.getElementById("name-sort-button").style = "background-color: rgb(113 113 113)";
+            return arrayFiches.sort((a, b) => a["fiche"]["family-name"].localeCompare(b["fiche"]["family-name"]));
+        case "type":
+            document.getElementById("type-sort-button").style = "background-color: rgb(113 113 113)";
+            return arrayFiches.sort((a, b) => a["fiche"]["cette-personne-veut"].localeCompare(b["fiche"]["cette-personne-veut"]));
+        case "sujet":
+            document.getElementById("sujet-sort-button").style = "background-color: rgb(113 113 113)";
+            return arrayFiches.sort((a, b) => a["fiche"]["en-rapport-avec"].localeCompare(b["fiche"]["en-rapport-avec"]));
+        case "date":
+            document.getElementById("date-sort-button").style = "background-color: rgb(113 113 113)";
+            return arrayFiches.sort((a, b) => b["id"].localeCompare(a["id"]));
+
+        default:
+            localStorage.setItem("sorting", "date");
+            location.reload()
+
+    }
+
+
 }
 
 const fetchFiche = (fiches) => {
@@ -112,24 +151,112 @@ const fetchFiche = (fiches) => {
 
     document.getElementById("button-container").innerHTML = '<button id="contact-button">Voir tous les contact</button>';
 
-    const keys = Object.keys(fiches).sort((a, b) => parseInt(b) - parseInt(a));
 
-    for (const key of keys) {
+    const sortedFiches = sortFiches(fiches);
+    // const keys = Object.keys(fiches).sort((a, b) => { parseInt(b) - parseInt(a) });
+
+    const searched = localStorage.getItem("searched");
+    const searchedIN = localStorage.getItem("searchedIn");
+    localStorage.removeItem("searched");
+    localStorage.removeItem("searchedIn");
+    console.log(searched);
+    console.log(searchedIN);
+    for (const fiche of sortedFiches) {
+
+        const searchConditions = (mode) => {
+            if (mode === "simple") {
+                if (fiche[searchedIN].toLowerCase().includes(searched.toLowerCase())) {
+                    return true;
+                }
+            } else if (mode === "fiche") {
+                if (fiche["fiche"][searchedIN].toLowerCase().includes(searched.toLowerCase())) {
+                    return true;
+                }
+            } else {
+                let result = false;
+                Object.values(fiche).forEach(element => {
+                    console.log(element === searched);
+                    if (typeof element === "string") {
+                        if (element.toLowerCase().includes(searched.toLowerCase())) {
+                            result = true;
+                        }
+                    }
+
+                })
+                Object.values(fiche.fiche).forEach(element => {
+                    if (typeof element === "string") {
+                        if (element.toLowerCase().includes(searched.toLowerCase())) {
+                            result = true
+                        }
+                    }
+                })
+
+                return result;
+
+            }
+        }
+
+
+        console.log(Object.values(fiche));
+        switch (searchedIN) {
+            case "client":
+                if (searchConditions("simple")) {
+                    console.log("includes");
+                    break;
+                }
+                continue;
+            case "societe":
+                if (searchConditions("fiche")) {
+                    console.log("includes");
+                    break;
+                }
+                continue;
+            case "email":
+                if (searchConditions("fiche")) {
+                    console.log("includes");
+                    break;
+                }
+                continue;
+            case "tel":
+                if (searchConditions("fiche")) {
+                    console.log("includes");
+                    break;
+                }
+                continue;
+            case "message":
+                if (searchConditions("fiche")) {
+                    console.log("includes");
+                    break;
+                }
+                continue;
+            case "all":
+                if (searchConditions("all")) {
+                    console.log("includes");
+                    break;
+                }
+                continue;
+
+
+            default:
+                break;
+        }
+
+
 
         const divElement = document.createElement("div");
         divElement.classList.add("fiche")
 
         const h2Element = document.createElement("h2");
-        h2Element.textContent = fiches[key]["fiche"]["given-name"] + " " + fiches[key]["fiche"]["family-name"].toUpperCase();
+        h2Element.textContent = fiche["fiche"]["given-name"] + " " + fiche["fiche"]["family-name"].toUpperCase();
 
         const pTypeElement = document.createElement("p");
-        pTypeElement.textContent = fiches[key].type + " -- " + fiches[key].fiche["en-rapport-avec"];
+        pTypeElement.textContent = fiche.type + " -- " + fiche.fiche["en-rapport-avec"];
 
         const pElement = document.createElement("p");
-        pElement.textContent = fiches[key].date + " à " + fiches[key].heure;
+        pElement.textContent = fiche.date + " à " + fiche.heure;
 
         const buttonElement = document.createElement("button");
-        buttonElement.id = key;
+        buttonElement.id = fiche["id"];
         buttonElement.textContent = "Voir";
 
         addListener(buttonElement, fiches);
@@ -144,8 +271,12 @@ const onClickContactButton = (contact) => {
         document.getElementById("button-container").innerHTML = null;
         document.getElementById("fiche-container").innerHTML = null;
 
-        for (const key in contact) {
-
+        const keys = Object.keys(contact);
+        console.log(keys);
+        const sortedKeys = keys.sort((a, b) => (a.split("-")[a.split("-").length - 1]).localeCompare(b.split("-")[b.split("-").length - 1]))
+        console.log(sortedKeys);
+        document.getElementById("fiche-container").innerHTML = "<p>les contacts sont triés par nom de famille</p>"
+        for (const key of sortedKeys) {
             const divElement = document.createElement("div");
             divElement.classList.add("fiche")
 
@@ -172,9 +303,9 @@ const onClickContactButton = (contact) => {
         backButtonElement.textContent = "Retour";
 
         backButtonElement.addEventListener("click", event => {
-            location.href = "/";
+            location.reload();
         })
-        document.querySelector("body").append(backButtonElement);
+        document.getElementById("button-container").append(backButtonElement);
     })
 }
 
@@ -207,10 +338,10 @@ const onPromiseFulfilled = async (pwd) => {
     let brutData;
     let cookies = document.cookie;
     if (cookies) {
-        console.log("cookies", cookies);
+        // console.log("cookies", cookies);
         fiches = await getDataSession(cookies);
         document.getElementById("starting-modal").style.display = 'none';
-        console.log("fiches", fiches);
+        // console.log("fiches", fiches);
         const infos = fetchInfos(fiches);
         fetchFiche(fiches);
         onClickContactButton(infos.contact);
@@ -266,3 +397,31 @@ try {
     }
 } catch { }
 
+
+document.getElementById("name-sort-button").addEventListener("click", event => {
+    localStorage.setItem("sorting", "name");
+    location.reload()
+})
+
+document.getElementById("type-sort-button").addEventListener("click", event => {
+    localStorage.setItem("sorting", "type");
+    location.reload()
+})
+
+document.getElementById("sujet-sort-button").addEventListener("click", event => {
+    localStorage.setItem("sorting", "sujet");
+    location.reload()
+})
+
+document.getElementById("date-sort-button").addEventListener("click", event => {
+    localStorage.setItem("sorting", "date");
+    location.reload()
+})
+
+document.getElementById("search-button").addEventListener("click", event => {
+    console.log(document.getElementById("input-searched-word").value);
+    console.log(document.getElementById("select-searched-in").value);
+    localStorage.setItem("searched", document.getElementById("input-searched-word").value);
+    localStorage.setItem("searchedIn", document.getElementById("select-searched-in").value);
+    location.reload()
+})
