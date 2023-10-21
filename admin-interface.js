@@ -1,7 +1,7 @@
 
 
 const getData = async (pwd, mode) => {
-    const promise = await fetch(`https://floriantocco.site/api/${mode}/`, {
+    const promise = await fetch(`https://parlonspc.net/api/${mode}/`, {
         method: "POST",
         // mode: "no-cors"
         headers: {
