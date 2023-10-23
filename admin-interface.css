@@ -6,12 +6,14 @@ body {
     text-align: center;
 }
 
-.infos-container {
+.infos-container,
+.infos-container-2 {
     display: flex;
     justify-content: space-between;
 }
 
-.infos-container p {
+.infos-container p,
+.infos-container-2 p {
     margin: 10px 20px;
     width: max-content;
 }
@@ -27,6 +29,7 @@ body {
 
 .search-bar form {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
 }
@@ -38,6 +41,7 @@ body {
 
 .search-bar form * {
     margin-right: 25px;
+    margin-top: 25px;
 }
 
 .sort-button-container {

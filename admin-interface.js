@@ -27,7 +27,8 @@ const parseFiches = (fiches) => {
     // console.log(fiches);
     let nbTotal = 0;
     let nbByCat = {};
-
+    let nbValid = 0;
+    let nbUnValid = 0;
     let contact = {};
 
     for (const key in fiches) {
@@ -38,6 +39,12 @@ const parseFiches = (fiches) => {
             lastTime = time;
             lastTimeStr = `le ${fiche.date} à ${fiche.heure}`
             lastClient = fiche.client.replace("-", " ");
+        }
+
+        if (fiche.status) {
+            nbValid++;
+        } else {
+            nbUnValid++;
         }
 
         if (fiche.type in nbByCat) {
@@ -68,6 +75,8 @@ const parseFiches = (fiches) => {
         nbByCat,
         nbTotal,
         contact,
+        nbValid,
+        nbUnValid,
     }
 }
 
@@ -81,6 +90,8 @@ const fetchInfos = (data) => {
     document.getElementById("nb-total").textContent += infos.nbTotal;
     document.getElementById("derniere-fiche").textContent += infos.lastFiche;
     document.getElementById("dernier-client").textContent += infos.lastClient;
+    document.getElementById("nb-valid-fiche").textContent += infos.nbValid;
+    document.getElementById("nb-unvalid-fiche").textContent += infos.nbUnValid;
     return infos;
 }
 
