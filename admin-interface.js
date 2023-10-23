@@ -249,7 +249,9 @@ const fetchFiche = (fiches, cookies) => {
         const divElement = document.createElement("div");
         divElement.classList.add("fiche")
         if (fiche.status) {
-            divElement.style.backgroundColor = "green";
+            divElement.classList.add("valid");
+        } else {
+            divElement.classList.remove("valid");
         }
 
         const h2Element = document.createElement("h2");
@@ -279,8 +281,9 @@ const fetchFiche = (fiches, cookies) => {
 
         divElement.append(h2Element, pTypeElement, pElement, changeFicheStatusButtonElement, voirButtonElement);
         document.getElementById("fiche-container").append(divElement);
-        changeFicheStatusButtonElement.addEventListener("click", event => {
-            fetch("https://parlonspc.net/api/set-fiche-status/", {
+
+        changeFicheStatusButtonElement.addEventListener("click", async event => {
+            await fetch("https://parlonspc.net/api/set-fiche-status/", {
                 method: "POST",
                 headers: {
                     "content-type": "application/json"

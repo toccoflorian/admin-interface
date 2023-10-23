@@ -71,6 +71,14 @@ body {
     background-color: rgb(231, 226, 226);
 }
 
+.fiche.valid {
+    background-color: rgb(97, 173, 97);
+}
+
+.fiche.valid:nth-child(2n) {
+    background-color: rgb(93, 159, 93);
+}
+
 .fiche * {
     padding: 0;
     margin: 0;
