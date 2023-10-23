@@ -149,7 +149,7 @@ const sortFiches = (fiches) => {
 
 }
 
-const fetchFiche = (fiches) => {
+const fetchFiche = (fiches, cookies) => {
     // document.getElementById("fiche-container").innerHTML = null;
 
     document.getElementById("button-container").innerHTML = '<button id="contact-button">Voir tous les contact</button>';
@@ -279,6 +279,16 @@ const fetchFiche = (fiches) => {
 
         divElement.append(h2Element, pTypeElement, pElement, changeFicheStatusButtonElement, voirButtonElement);
         document.getElementById("fiche-container").append(divElement);
+        changeFicheStatusButtonElement.addEventListener("click", event => {
+            fetch("https://parlonspc.net/api/set-fiche-status/", {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify(fiche["id"])
+            })
+            location.reload();
+        })
     }
 }
 
@@ -374,7 +384,7 @@ const onPromiseFulfilled = async (pwd) => {
 
             document.getElementById("starting-modal").style.display = 'none';
             const infos = fetchInfos(fiches);
-            fetchFiche(fiches);
+            fetchFiche(fiches, cookies);
             onClickContactButton(infos.contact);
 
         } else {
