@@ -92,18 +92,21 @@ const addListener = (button, fiches) => {
         document.getElementById("fiche-container").innerHTML = null;
         document.getElementById("fiche-container").innerHTML = `<h2>${fiches[button.id]["client"].replace("-", " ")} le ${fiches[button.id]["date"]} à ${fiches[button.id]["heure"]}</h2> <br><br>`
         for (const key in fiche) {
-            document.getElementById("fiche-container").innerHTML += "<p>" + key + ": <br><span style='color:blue'>" + fiche[key] + "</span></p>";
+            if (key !== "status") {
+                document.getElementById("fiche-container").innerHTML += "<p>" + key + ": <br><span style='color:blue'>" + fiche[key] + "</span></p>";
+            }
+
         }
 
         document.getElementById("fiche-container").style.display = "block";
 
-        const backButtonElement = document.createElement("button");
-        backButtonElement.textContent = "Retour";
+        const backvoirButtonElement = document.createElement("button");
+        backvoirButtonElement.textContent = "Retour";
 
-        backButtonElement.addEventListener("click", event => {
+        backvoirButtonElement.addEventListener("click", event => {
             location.reload();
         })
-        document.getElementById("button-container").append(backButtonElement)
+        document.getElementById("button-container").append(backvoirButtonElement)
     })
 }
 
@@ -245,6 +248,9 @@ const fetchFiche = (fiches) => {
 
         const divElement = document.createElement("div");
         divElement.classList.add("fiche")
+        if (fiche.status) {
+            divElement.style.backgroundColor = "green";
+        }
 
         const h2Element = document.createElement("h2");
         h2Element.textContent = fiche["fiche"]["given-name"] + " " + fiche["fiche"]["family-name"].toUpperCase();
@@ -255,13 +261,23 @@ const fetchFiche = (fiches) => {
         const pElement = document.createElement("p");
         pElement.textContent = fiche.date + " à " + fiche.heure;
 
-        const buttonElement = document.createElement("button");
-        buttonElement.id = fiche["id"];
-        buttonElement.textContent = "Voir";
+        const changeFicheStatusButtonElement = document.createElement("button");
+        if (fiche.status) {
+            changeFicheStatusButtonElement.textContent = "unvalider";
+        } else {
+            changeFicheStatusButtonElement.textContent = "valider";
+        }
+        changeFicheStatusButtonElement.id = "valid-" + fiche["id"];
 
-        addListener(buttonElement, fiches);
 
-        divElement.append(h2Element, pTypeElement, pElement, buttonElement);
+
+        const voirButtonElement = document.createElement("button");
+        voirButtonElement.id = fiche["id"];
+        voirButtonElement.textContent = "Voir";
+
+        addListener(voirButtonElement, fiches);
+
+        divElement.append(h2Element, pTypeElement, pElement, changeFicheStatusButtonElement, voirButtonElement);
         document.getElementById("fiche-container").append(divElement);
     }
 }
@@ -299,13 +315,13 @@ const onClickContactButton = (contact) => {
             divElement.append(h2Element, pTypeElement, pElement);
             document.getElementById("fiche-container").append(divElement);
         }
-        const backButtonElement = document.createElement("button");
-        backButtonElement.textContent = "Retour";
+        const backvoirButtonElement = document.createElement("button");
+        backvoirButtonElement.textContent = "Retour";
 
-        backButtonElement.addEventListener("click", event => {
+        backvoirButtonElement.addEventListener("click", event => {
             location.reload();
         })
-        document.getElementById("button-container").append(backButtonElement);
+        document.getElementById("button-container").append(backvoirButtonElement);
     })
 }
 
