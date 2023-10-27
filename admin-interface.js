@@ -130,7 +130,6 @@ const sortFiches = (fiches) => {
         arrayFiches.push(ficheObject)
     }
 
-    console.log(arrayFiches);
 
 
     switch (sortingValue) {
@@ -167,8 +166,6 @@ const fetchFiche = (fiches, cookies) => {
     const searchedIN = localStorage.getItem("searchedIn");
     localStorage.removeItem("searched");
     localStorage.removeItem("searchedIn");
-    console.log(searched);
-    console.log(searchedIN);
     for (const fiche of sortedFiches) {
 
         const searchConditions = (mode) => {
@@ -183,7 +180,6 @@ const fetchFiche = (fiches, cookies) => {
             } else {
                 let result = false;
                 Object.values(fiche).forEach(element => {
-                    console.log(element === searched);
                     if (typeof element === "string") {
                         if (element.toLowerCase().includes(searched.toLowerCase())) {
                             result = true;
@@ -205,41 +201,34 @@ const fetchFiche = (fiches, cookies) => {
         }
 
 
-        console.log(Object.values(fiche));
         switch (searchedIN) {
             case "client":
                 if (searchConditions("simple")) {
-                    console.log("includes");
                     break;
                 }
                 continue;
             case "societe":
                 if (searchConditions("fiche")) {
-                    console.log("includes");
                     break;
                 }
                 continue;
             case "email":
                 if (searchConditions("fiche")) {
-                    console.log("includes");
                     break;
                 }
                 continue;
             case "tel":
                 if (searchConditions("fiche")) {
-                    console.log("includes");
                     break;
                 }
                 continue;
             case "message":
                 if (searchConditions("fiche")) {
-                    console.log("includes");
                     break;
                 }
                 continue;
             case "all":
                 if (searchConditions("all")) {
-                    console.log("includes");
                     break;
                 }
                 continue;
@@ -306,9 +295,7 @@ const onClickContactButton = (contact) => {
         document.getElementById("fiche-container").innerHTML = null;
 
         const keys = Object.keys(contact);
-        console.log(keys);
         const sortedKeys = keys.sort((a, b) => (a.split("-")[a.split("-").length - 1]).localeCompare(b.split("-")[b.split("-").length - 1]))
-        console.log(sortedKeys);
         document.getElementById("fiche-container").innerHTML = "<p>les contacts sont triés par nom de famille</p>"
         for (const key of sortedKeys) {
             const divElement = document.createElement("div");
@@ -372,10 +359,8 @@ const onPromiseFulfilled = async (pwd) => {
     let brutData;
     let cookies = document.cookie;
     if (cookies) {
-        // console.log("cookies", cookies);
         fiches = await getDataSession(cookies);
         document.getElementById("starting-modal").style.display = 'none';
-        // console.log("fiches", fiches);
         const infos = fetchInfos(fiches);
         fetchFiche(fiches);
         onClickContactButton(infos.contact);
@@ -453,8 +438,6 @@ document.getElementById("date-sort-button").addEventListener("click", event => {
 })
 
 document.getElementById("search-button").addEventListener("click", event => {
-    console.log(document.getElementById("input-searched-word").value);
-    console.log(document.getElementById("select-searched-in").value);
     localStorage.setItem("searched", document.getElementById("input-searched-word").value);
     localStorage.setItem("searchedIn", document.getElementById("select-searched-in").value);
     location.reload()
