@@ -1,9 +1,8 @@
 
 
 const getData = async (pwd, mode) => {
-    const promise = await fetch(`https://parlonspc.net/api/${mode}/`, {
+    const promise = await fetch(`https://parlonspc.fr/api/${mode}/`, {
         method: "POST",
-        // mode: "no-cors"
         headers: {
             "content-type": "application/json"
         },
@@ -24,7 +23,6 @@ const parseFiches = (fiches) => {
     let lastClient;
     let lastTimeStr;
     let lastTime = 0;
-    // console.log(fiches);
     let nbTotal = 0;
     let nbByCat = {};
     let nbValid = 0;
@@ -130,8 +128,6 @@ const sortFiches = (fiches) => {
         const ficheObject = fiches[fiche];
         ficheObject["id"] = fiche;
         arrayFiches.push(ficheObject)
-        // arrayFiches[fiches[fiche]]["id"] = fiche;
-        // console.log(fiches[fiche]);
     }
 
     console.log(arrayFiches);
@@ -161,13 +157,11 @@ const sortFiches = (fiches) => {
 }
 
 const fetchFiche = (fiches, cookies) => {
-    // document.getElementById("fiche-container").innerHTML = null;
 
     document.getElementById("button-container").innerHTML = '<button id="contact-button">Voir tous les contact</button>';
 
 
     const sortedFiches = sortFiches(fiches);
-    // const keys = Object.keys(fiches).sort((a, b) => { parseInt(b) - parseInt(a) });
 
     const searched = localStorage.getItem("searched");
     const searchedIN = localStorage.getItem("searchedIn");
@@ -294,7 +288,7 @@ const fetchFiche = (fiches, cookies) => {
         document.getElementById("fiche-container").append(divElement);
 
         changeFicheStatusButtonElement.addEventListener("click", async event => {
-            await fetch("https://parlonspc.net/api/set-fiche-status/", {
+            await fetch("https://parlonspc.fr/api/set-fiche-status/", {
                 method: "POST",
                 headers: {
                     "content-type": "application/json"
@@ -350,7 +344,7 @@ const onClickContactButton = (contact) => {
 }
 
 
-const extractCookies = (brutData) => {
+const extractData = (brutData) => {
     const data = JSON.parse(brutData)
     let fiches = {};
     let cookies = {};
@@ -389,7 +383,7 @@ const onPromiseFulfilled = async (pwd) => {
         brutData = await getData(pwd, "get-fiches");
         if (brutData != "bad") {
 
-            const datas = extractCookies(brutData);
+            const datas = extractData(brutData);
 
             fiches = datas["fiches"];
             cookies = datas["cookies"];
